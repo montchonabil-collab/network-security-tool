@@ -1,0 +1,60 @@
+devsecops
+
+tp1
+
+Question 1 : Quelle est la différence entre git add et git commit ?
+La commande git add préparer les modifications, place les modifications dans la zone de staging (index).
+La commande git commit enregistrer les modifications, crée un point de sauvegarde dans l'historique Git avec les fichiers qui ont été ajoutés dans la zone de staging.
+
+Question 2 : Que représente un commit dans Git ?
+Un commit dans Git représente un instantané (snapshot) du projet à un moment donné.
+
+Question 3 : Pourquoi créer une branche plutôt que modifier directement la branche principale ?
+Créer une branche permet de travailler sur une nouvelle fonctionnalité ou une correction sans risquer d'endommager la branche principale (main ou master).
+
+Question 4 : Quel est le rôle d’une Pull Request dans un projet collaboratif ?
+Une Pull Request (PR) est une demande de fusion des modifications d'une branche vers une autre (généralement vers main).
+Elle permet aux autres membres de l'équipe de :
+Examiner le code avant son intégration.
+Détecter d'éventuelles erreurs ou problèmes.
+Discuter des modifications proposées.
+Valider le respect des bonnes pratiques du projet.
+Contrôler les changements avant qu'ils n'affectent la branche principale.
+
+
+tp2
+
+Question 1 : pourquoi les tests ne dépendent-ils pas de l’ouverture
+réelle du port 443 ?
+Les tests ne dépendent pas de l'ouverture réelle du port 443 car ils vérifient uniquement le comportement des fonctions du programme et la validation des paramètres. Les tests contrôlent que la fonction is_valid_port() accepte un port valide et rejette un port invalide, ainsi que le déclenchement d'une exception lorsqu'un numéro de port incorrect est fourni. Ils ne cherchent pas à établir une connexion réelle au port 443. Ainsi, les résultats des tests restent identiques quel que soit l'état réel du réseau ou des services en cours d'exécution.
+
+Question 2 : Quelle différence entre push et pull_request ?
+Un événement **push** se produit lorsqu’un développeur envoie de nouvelles modifications vers une branche du dépôt GitHub à l’aide de la commande `git push`. Le workflow est alors automatiquement déclenché pour vérifier le code ajouté.
+
+Un événement **pull_request** se produit lorsqu’un développeur crée ou met à jour une demande de fusion (Pull Request) entre deux branches, par exemple de `feature/ci-pipeline` vers `main`. Le workflow est exécuté afin de vérifier que les tests et les contrôles de sécurité sont validés avant l’intégration du code dans la branche principale.
+
+Question 3 : Que se passe-t-il si pytest renvoie un code d’erreur ?
+Si `pytest` renvoie un code d’erreur, cela signifie qu’au moins un test a échoué ou qu’une erreur s’est produite lors de l’exécution des tests. Dans GitHub Actions, l’étape **Run unit tests** est alors marquée en échec et le workflow s’arrête. Le pipeline passe au rouge et les étapes suivantes ne sont généralement pas exécutées. Cette vérification permet de détecter rapidement les problèmes avant que le code ne soit intégré à la branche principale.
+
+Question 4 : pourquoi est-il utile de bloquer l’intégration d’une Pull Request lorsque les tests échouent ?
+Il est utile de bloquer l’intégration d’une Pull Request lorsque les tests échouent afin d’empêcher l’ajout de code défectueux dans la branche principale. Les tests permettent de vérifier que les fonctionnalités existantes continuent de fonctionner correctement après une modification. Si un test échoue, cela peut indiquer un bug ou une régression. En bloquant la Pull Request, l’équipe s’assure que les problèmes sont corrigés avant la fusion du code, ce qui améliore la qualité, la stabilité et la sécurité du projet.
+
+Question 5 : quelle différence entre ce contrôle SAST et les tests fonctionnels pytest ?
+Les tests fonctionnels réalisés avec **pytest** vérifient que le programme fonctionne correctement et produit les résultats attendus. Ils permettent de détecter des erreurs de logique, des bugs ou des régressions après une modification du code.
+
+Le contrôle **SAST (Static Application Security Testing)** réalisé avec **Bandit** analyse le code source sans l’exécuter afin d’identifier d’éventuelles failles de sécurité ou mauvaises pratiques de programmation. Il recherche par exemple l’utilisation de fonctions dangereuses, une mauvaise gestion des entrées ou des configurations présentant un risque de sécurité.
+
+Ainsi, **pytest vérifie le bon fonctionnement du programme**, tandis que **Bandit vérifie la sécurité du code source**. Ces deux contrôles sont complémentaires dans une démarche DevSecOps.
+
+
+Bonus — Pour aller plus loin
+La commande `python -m compileall -q network_check.py` vérifie que le fichier Python peut être compilé correctement en bytecode. Elle permet de détecter certaines erreurs de syntaxe, comme une parenthèse oubliée, une indentation incorrecte ou une erreur dans l’écriture du code.
+
+Cette vérification ne remplace pas les tests réalisés avec `pytest`, car un programme peut être syntaxiquement correct mais produire des résultats incorrects lors de son exécution. Les tests unitaires vérifient le comportement et la logique du programme.
+
+Elle ne remplace pas non plus `Bandit`, car la compilation ne recherche pas les vulnérabilités ou les mauvaises pratiques de sécurité dans le code. Bandit effectue une analyse statique orientée sécurité afin d’identifier d’éventuels risques.
+
+Ainsi, ces trois contrôles sont complémentaires :
+- `compileall` vérifie la syntaxe et la compilation du code ;
+- `pytest` vérifie le bon fonctionnement des fonctionnalités ;
+- `Bandit` vérifie les aspects liés à la sécurité.
